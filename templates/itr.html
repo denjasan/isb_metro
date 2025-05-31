@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block title %}Инженерно-технические работники{% endblock %}
+{% block content %}
+<h1>ИТР</h1>
+
+{# Форма поиска #}
+<form method="get" class="search-form">
+  <input
+    type="text"
+    name="q"
+    value="{{ q }}"
+    placeholder="Поиск по ФИО или должности..."
+  >
+  <button type="submit">Найти</button>
+</form>
+
+{% if current_user.role in settings.ITR_EDIT %}
+<form action="{{ url_for('itr_add') }}" method="post" class="crud-form">
+  <!-- ФИО: текст до 300 символов -->
+  <input
+    name="full_name"
+    type="text"
+    maxlength="300"
+    placeholder="ФИО"
+    required
+  >
+
+  <!-- Должность: текст до 100 символов -->
+  <input
+    name="position"
+    type="text"
+    maxlength="100"
+    placeholder="Должность"
+    required
+  >
+
+  <!-- Опыт (лет): целое число ≥ 0 -->
+  <input
+    name="experience"
+    type="number"
+    step="1"
+    min="0"
+    placeholder="Опыт (лет)"
+    required
+  >
+
+  <!-- Отдел: текст до 100 символов -->
+  <input
+    name="section"
+    type="text"
+    maxlength="100"
+    placeholder="Отдел"
+    required
+  >
+
+  <!-- Зарплата: число с двумя знаками после запятой, ≥ 0 -->
+  <input
+    name="salary"
+    type="number"
+    step="0.01"
+    min="0"
+    placeholder="Зарплата"
+    required
+  >
+
+  <button type="submit">Добавить запись</button>
+</form>
+{% endif %}
+
+
+<div class="table-container">
+<table>
+  {% if items %}
+  <tr>
+    {% for col in items[0].keys() %}<th>{{ col }}</th>{% endfor %}
+    <th>Действия</th>
+  </tr>
+  {% for i in items %}
+  <tr>
+    {% for val in i.values() %}<td>{{ val }}</td>{% endfor %}
+    <td>
+      {% if current_user.role in settings.ITR_EDIT %}
+      <a href="{{ url_for('itr_delete', worker_id=i.worker_id) }}">Удалить</a>
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+  {% else %}
+    <tr><td colspan="100%">Нет записей</td></tr>
+  {% endif %}
+</table>
+</div>
+{% endblock %}

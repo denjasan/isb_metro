@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Ведомость механизмов{% endblock %}
+{% block content %}
+<h1>Ведомость основных механизмов</h1>
+
+{# Форма поиска #}
+<form method="get" class="search-form">
+  <input
+    type="text"
+    name="q"
+    value="{{ q }}"
+    placeholder="Поиск по названию или локации..."
+  >
+  <button type="submit">Найти</button>
+</form>
+
+<!-- 2. Ведомость основных механизмов -->
+{% if current_user.role in settings.MECHANISMS_EDIT %}
+<form action="{{ url_for('mechanism_add') }}" method="post" class="crud-form">
+  <!-- estimate_id INT -->
+  <input
+    name="estimate_id"
+    type="number"
+    step="1"
+    min="1"
+    placeholder="Estimate ID"
+    required
+  >
+  <!-- mechanism_name VARCHAR(300) -->
+  <input
+    name="name"
+    type="text"
+    maxlength="300"
+    placeholder="Название механизма"
+    required
+  >
+  <!-- type_brand_load_capacity VARCHAR(100) -->
+  <input
+    name="type"
+    type="text"
+    maxlength="100"
+    placeholder="Тип/Марка/Грузоподъемность"
+    required
+  >
+  <!-- quantity INT -->
+  <input
+    name="quantity"
+    type="number"
+    step="1"
+    min="0"
+    placeholder="Кол-во"
+    required
+  >
+  <!-- location VARCHAR(200) -->
+  <input
+    name="location"
+    type="text"
+    maxlength="200"
+    placeholder="Локация"
+    required
+  >
+  <button type="submit">Добавить запись</button>
+</form>
+{% endif %}
+
+
+<div class="table-container">
+<table>
+  {% if items %}
+  <tr>
+    {% for col in items[0].keys() %}<th>{{ col }}</th>{% endfor %}
+    {% if current_user.role in settings.MECHANISMS_EDIT %}<th>Действия</th>{% endif %}
+  </tr>
+  {% for m in items %}
+  <tr>
+    {% for val in m.values() %}<td>{{ val }}</td>{% endfor %}
+    {% if current_user.role in settings.MECHANISMS_EDIT %}
+    <td><a href="{{ url_for('mechanism_delete', mechanism_id=m.mechanism_id) }}">Удалить</a></td>
+    {% endif %}
+  </tr>
+  {% endfor %}
+  {% else %}
+    <tr><td colspan="100%">Нет записей</td></tr>
+  {% endif %}
+</table>
+{% endblock %}
+</div>

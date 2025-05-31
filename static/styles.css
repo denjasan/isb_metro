@@ -1,0 +1,425 @@
+/* static/styles.css */
+
+/* ======================================================
+   Общие настройки
+   ====================================================== */
+body {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #eef2f5;
+  color: #2c3e50;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ======================================================
+   Навигация
+   ====================================================== */
+/* ===== Навигация ===== */
+nav {
+  background: linear-gradient(90deg, #2c3e50, #34495e);
+  padding: 1em 2em;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+nav a {
+  color: #ecf0f1;
+  margin-right: 1.5em;
+  font-weight: 500;
+  transition: color 0.2s ease-in-out, border-bottom 0.2s ease-in-out;
+  padding-bottom: 0.2em;
+}
+
+/* Выделяем текущую ссылку */
+nav a.active {
+  color: #f39c12;
+  border-bottom: 2px solid #f39c12;
+}
+
+/* При наведении */
+nav a:hover {
+  color: #f39c12;
+}
+
+/* ======================================================
+   Основной контент
+   ====================================================== */
+main {
+  padding: 2em;
+  max-width: 1280px;
+  margin: 2em auto;
+  background: #ffffff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* ======================================================
+   Заголовки
+   ====================================================== */
+h1 {
+  margin-top: 0;
+  margin-bottom: 1em;
+  font-size: 1.8em;
+  color: #2c3e50;
+  border-bottom: 2px solid #ecf0f1;
+  padding-bottom: 0.5em;
+}
+
+h2 {
+  margin-top: 1.5em;
+  margin-bottom: 0.75em;
+  font-size: 1.4em;
+  color: #34495e;
+}
+
+/* ======================================================
+   Сообщения и уведомления
+   ====================================================== */
+.message {
+  padding: 0.75em 1em;
+  margin-bottom: 1em;
+  border-radius: 4px;
+  font-size: 0.95em;
+}
+
+.success {
+  background-color: #e8f8f5;
+  color: #27ae60;
+  border: 1px solid #2ecc71;
+}
+
+.warning {
+  background-color: #fcf3cf;
+  color: #d35400;
+  border: 1px solid #f39c12;
+}
+
+.error {
+  background-color: #fdecea;
+  color: #c0392b;
+  border: 1px solid #e74c3c;
+}
+/* ===== Форма поиска ===== */
+.search-form {
+  margin-bottom: 1em;
+  display: flex;
+  align-items: center;
+}
+
+.search-form input[type="text"] {
+  flex: 1;
+  padding: 0.4em 0.6em;
+  border: 1px solid #ccc;
+  border-radius: 4px 0 0 4px;
+  font-size: 1em;
+}
+
+.search-form button {
+  padding: 0.4em 0.8em;
+  border: 1px solid #ccc;
+  border-left: none;
+  background-color: #2980b9;
+  color: white;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.2s ease;
+}
+
+.search-form button:hover {
+  background-color: #1f618d;
+}
+
+/* Немного отступов вокруг основных блоков (чтобы таблицы не уезжали за край) */
+main {
+  padding: 2em 1em;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Ваша остальная стилизация для nav, table и т.д. */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+nav {
+  background: #333;
+  padding: 1em 2em;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+nav a {
+  color: #fff;
+  margin-right: 1em;
+  text-decoration: none;
+}
+
+nav a.active {
+  color: #f39c12;
+  border-bottom: 2px solid #f39c12;
+}
+
+nav a:hover {
+  color: #f39c12;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1em;
+}
+
+th,
+td {
+  border: 1px solid #ccc;
+  padding: 0.5em;
+  text-align: left;
+}
+
+.flash-messages {
+  margin: 1em 0;
+}
+
+.message {
+  padding: 0.75em 1em;
+  margin-bottom: 0.75em;
+  border-radius: 4px;
+  font-size: 0.95em;
+}
+
+.message.success {
+  background-color: #e8f8f5;
+  color: #27ae60;
+  border: 1px solid #2ecc71;
+}
+
+.message.warning {
+  background-color: #fcf3cf;
+  color: #d35400;
+  border: 1px solid #f39c12;
+}
+
+.message.error {
+  background-color: #fdecea;
+  color: #c0392b;
+  border: 1px solid #e74c3c;
+}
+
+.message.info {
+  background-color: #e8f4fd;
+  color: #2980b9;
+  border: 1px solid #3498db;
+}
+
+
+/* ======================================================
+   Формы
+   ====================================================== */
+form.crud-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75em;
+  margin-bottom: 1.5em;
+  align-items: flex-end;
+}
+
+form.crud-form input,
+form.crud-form select,
+form.crud-form textarea {
+  padding: 0.5em 0.75em;
+  border: 1px solid #bdc3c7;
+  border-radius: 4px;
+  font-size: 0.95em;
+  flex: 1 1 180px;
+  background: #fafbfc;
+  transition: border-color 0.2s ease;
+}
+
+form.crud-form input:focus,
+form.crud-form select:focus,
+form.crud-form textarea:focus {
+  border-color: #3498db;
+  outline: none;
+  background: #fff;
+}
+
+form.crud-form button {
+  padding: 0.55em 1.2em;
+  background: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.95em;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+form.crud-form button:hover {
+  background: #2980b9;
+}
+
+/* ======================================================
+   Таблицы
+   ====================================================== */
+.table-container {
+  overflow-x: auto;
+  margin-top: 1em;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 auto;
+  font-size: 0.95em;
+  min-width: 600px;
+}
+
+thead {
+  background: linear-gradient(90deg, #f5f7fa, #e9ebee);
+}
+
+th,
+td {
+  border: 1px solid #dcdfe3;
+  padding: 0.75em 1em;
+  text-align: left;
+}
+
+th {
+  font-weight: 600;
+  color: #34495e;
+}
+
+tbody tr {
+  background: #fff;
+  transition: background 0.2s ease;
+}
+
+tbody tr:nth-child(even) {
+  background: #f9fafb;
+}
+
+tbody tr:hover {
+  background: #ecf0f1;
+}
+
+td a {
+  color: #e74c3c;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+td a:hover {
+  color: #c0392b;
+}
+
+/* ======================================================
+   Кнопка удаления
+   ====================================================== */
+.delete-btn {
+  padding: 0.35em 0.7em;
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  font-size: 0.85em;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.delete-btn:hover {
+  background: #c0392b;
+}
+
+/* ======================================================
+   Кнопка редактирования (если понадобится)
+   ====================================================== */
+.edit-btn {
+  padding: 0.35em 0.7em;
+  background: #f1c40f;
+  color: #2c3e50;
+  border: none;
+  border-radius: 3px;
+  font-size: 0.85em;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  margin-right: 0.5em;
+}
+
+.edit-btn:hover {
+  background: #d4ac0d;
+}
+
+/* ======================================================
+   Полоска прогресса/финансов (если понадобится в отчётах)
+   ====================================================== */
+.progress-bar {
+  position: relative;
+  background: #ecf0f1;
+  border-radius: 4px;
+  overflow: hidden;
+  height: 1em;
+  margin-bottom: 0.75em;
+}
+
+.progress-bar .progress {
+  background: #2ecc71;
+  height: 100%;
+  text-align: right;
+  padding-right: 0.5em;
+  color: #fff;
+  font-size: 0.8em;
+  line-height: 1em;
+}
+
+/* ======================================================
+   Мобильная адаптация
+   ====================================================== */
+@media (max-width: 1024px) {
+  main {
+    margin: 1em;
+    padding: 1.5em;
+  }
+  .crud-form {
+    gap: 0.5em;
+  }
+  form.crud-form input,
+  form.crud-form select,
+  form.crud-form textarea {
+    flex: 1 1 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  nav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  nav .nav-left,
+  nav .nav-right {
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 0.5em;
+  }
+  nav a {
+    margin-right: 1em;
+    font-size: 0.9em;
+  }
+  .crud-form {
+    flex-direction: column;
+  }
+  table {
+    min-width: 100%;
+  }
+}

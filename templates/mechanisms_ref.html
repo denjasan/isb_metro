@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block title %}Справочник механизмов{% endblock %}
+{% block content %}
+<h1>Справочник механизмов</h1>
+
+{# Форма поиска #}
+<form method="get" class="search-form">
+  <input
+    type="text"
+    name="q"
+    value="{{ q }}"
+    placeholder="Поиск по названию или типу..."
+  >
+  <button type="submit">Найти</button>
+</form>
+
+<!-- 3. Справочник механизмов -->
+{% if current_user.role in settings.MECHANISMS_REF_EDIT %}
+<form action="{{ url_for('mechanisms_ref_add') }}" method="post" class="crud-form">
+  <!-- mechanism_name VARCHAR(300) -->
+  <input
+    name="mechanism_name"
+    type="text"
+    maxlength="300"
+    placeholder="Название механизма"
+    required
+  >
+  <!-- type_brand_load_capacity VARCHAR(100) -->
+  <input
+    name="type_brand_load_capacity"
+    type="text"
+    maxlength="100"
+    placeholder="Тип/Марка/Грузоподъемность"
+    required
+  >
+  <!-- stock_quantity INT -->
+  <input
+    name="stock_quantity"
+    type="number"
+    step="1"
+    min="0"
+    placeholder="На складе"
+    required
+  >
+  <!-- storage_location VARCHAR(200) -->
+  <input
+    name="storage_location"
+    type="text"
+    maxlength="200"
+    placeholder="Местоположение"
+  >
+  <!-- site_quantity INT -->
+  <input
+    name="site_quantity"
+    type="number"
+    step="1"
+    min="0"
+    placeholder="На объекте"
+  >
+  <!-- stock_remaining INT -->
+  <input
+    name="stock_remaining"
+    type="number"
+    step="1"
+    min="0"
+    placeholder="Остаток"
+  >
+  <button type="submit">Добавить запись</button>
+</form>
+{% endif %}
+
+
+<div class="table-container">
+<table>
+  {% if items %}
+  <tr>
+    {% for col in items[0].keys() %}<th>{{ col }}</th>{% endfor %}
+    {% if current_user.role in settings.MECHANISMS_REF_EDIT %}<th>Действия</th>{% endif %}
+  </tr>
+  {% for m in items %}
+  <tr>
+    {% for val in m.values() %}<td>{{ val }}</td>{% endfor %}
+    {% if current_user.role in settings.MECHANISMS_REF_EDIT %}
+    <td><a href="{{ url_for('mechanisms_ref_delete', mechanism_id=m.mechanism_id) }}">Удалить</a></td>
+    {% endif %}
+  </tr>
+  {% endfor %}
+  {% else %}
+    <tr><td colspan="100%">Нет записей</td></tr>
+  {% endif %}
+</table>
+{% endblock %}
+</div>

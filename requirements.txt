@@ -1,0 +1,10 @@
+flask[async]>=2.2
+flask-login
+psycopg2-binary
+pydantic
+passlib[bcrypt]
+PyJWT
+fastapi
+uvicorn[standard]
+jinja2
+python-multipart

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Объёмы работ{% endblock %}
+{% block content %}
+<h1>Ведомость объёмов работ</h1>
+
+
+{# Форма поиска #}
+<form method="get" class="search-form">
+  <input
+    type="text"
+    name="q"
+    value="{{ q }}"
+    placeholder="Поиск по названию или примечаниям..."
+  >
+  <button type="submit">Найти</button>
+</form>
+
+<!-- 4. Ведомость объёмов работ -->
+{% if current_user.role in settings.WORK_VOLUMES_EDIT %}
+<form action="{{ url_for('work_volume_add') }}" method="post" class="crud-form">
+  <!-- work_name VARCHAR(300) -->
+  <input
+    name="name"
+    type="text"
+    maxlength="300"
+    placeholder="Наименование работы"
+    required
+  >
+  <!-- unit_of_measurement VARCHAR(50) -->
+  <input
+    name="unit"
+    type="text"
+    maxlength="50"
+    placeholder="Ед. изм."
+    required
+  >
+  <!-- quantity DECIMAL(10,2) -->
+  <input
+    name="quantity"
+    type="number"
+    step="0.01"
+    min="0"
+    placeholder="Кол-во"
+    required
+  >
+  <!-- notes TEXT -->
+  <input
+    name="notes"
+    type="text"
+    placeholder="Примечания"
+  >
+  <button type="submit">Добавить запись</button>
+</form>
+{% endif %}
+
+
+<div class="table-container">
+<table>
+  {% if items %}
+  <tr>
+    {% for col in items[0].keys() %}<th>{{ col }}</th>{% endfor %}
+    {% if current_user.role in settings.WORK_VOLUMES_EDIT %}<th>Действия</th>{% endif %}
+  </tr>
+  {% for w in items %}
+  <tr>
+    {% for val in w.values() %}<td>{{ val }}</td>{% endfor %}
+    {% if current_user.role in settings.WORK_VOLUMES_EDIT %}
+    <td><a href="{{ url_for('work_volume_delete', work_id=w.work_id) }}">Удалить</a></td>
+    {% endif %}
+  </tr>
+  {% endfor %}
+  {% else %}
+    <tr><td colspan="100%">Нет записей</td></tr>
+  {% endif %}
+</table>
+{% endblock %}
+</div>

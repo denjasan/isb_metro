@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}Справочник материалов{% endblock %}
+{% block content %}
+<h1>Справочник материалов и оборудования</h1>
+
+{# Форма поиска #}
+<form method="get" class="search-form">
+  <input
+    type="text"
+    name="q"
+    value="{{ q }}"
+    placeholder="Поиск по наименованию или поставщику..."
+  >
+  <button type="submit">Найти</button>
+</form>
+
+<!-- 1. Справочник материалов и оборудования -->
+{% if current_user.role in settings.MATERIALS_REF_EDIT %}
+<form action="{{ url_for('materials_ref_add') }}" method="post" class="crud-form">
+  <!-- name VARCHAR(300) -->
+  <input
+    name="name"
+    type="text"
+    maxlength="300"
+    placeholder="Наименование"
+    required
+  >
+  <!-- type_brand_size VARCHAR(100) -->
+  <input
+    name="type_brand_size"
+    type="text"
+    maxlength="100"
+    placeholder="Тип/Марка/Размер"
+    required
+  >
+  <!-- unit_of_measurement VARCHAR(50) -->
+  <input
+    name="unit_of_measurement"
+    type="text"
+    maxlength="50"
+    placeholder="Ед. изм."
+    required
+  >
+  <!-- quantity DECIMAL(10,2) -->
+  <input
+    name="quantity"
+    type="number"
+    step="0.01"
+    min="0"
+    placeholder="Кол-во"
+    required
+  >
+  <!-- supplier VARCHAR(200) -->
+  <input
+    name="supplier"
+    type="text"
+    maxlength="200"
+    placeholder="Поставщик"
+  >
+  <!-- unit_cost_rub DECIMAL(10,2) -->
+  <input
+    name="unit_cost_rub"
+    type="number"
+    step="0.01"
+    min="0"
+    placeholder="Цена за ед."
+  >
+  <!-- total_cost_rub DECIMAL(15,2) -->
+  <input
+    name="total_cost_rub"
+    type="number"
+    step="0.01"
+    min="0"
+    placeholder="Общая стоимость"
+  >
+  <!-- storage_location VARCHAR(200) -->
+  <input
+    name="storage_location"
+    type="text"
+    maxlength="200"
+    placeholder="Местоположение"
+  >
+  <button type="submit">Добавить запись</button>
+</form>
+{% endif %}
+
+
+<div class="table-container">
+<table>
+  {% if items %}
+  <tr>
+    {% for col in items[0].keys() %}<th>{{ col }}</th>{% endfor %}
+    {% if current_user.role in settings.MATERIALS_REF_EDIT %}<th>Действия</th>{% endif %}
+  </tr>
+  {% for m in items %}
+  <tr>
+    {% for val in m.values() %}<td>{{ val }}</td>{% endfor %}
+    {% if current_user.role in settings.MATERIALS_REF_EDIT %}
+    <td><a href="{{ url_for('materials_ref_delete', material_equipment_id=m.material_equipment_id) }}">Удалить</a></td>
+    {% endif %}
+  </tr>
+  {% endfor %}
+  {% else %}
+    <tr><td colspan="100%">Нет записей</td></tr>
+  {% endif %}
+</table>
+{% endblock %}
+</div>

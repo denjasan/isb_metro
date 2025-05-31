@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Спецификация материалов{% endblock %}
+{% block content %}
+<h1>Спецификация материалов и оборудования</h1>
+
+{# Форма поиска #}
+<form method="get" class="search-form">
+  <input
+    type="text"
+    name="q"
+    value="{{ q }}"
+    placeholder="Поиск по тех. спецификации или типу..."
+  >
+  <button type="submit">Найти</button>
+</form>
+
+<!-- Фрагмент materials.html -->
+{% if current_user.role in settings.MATERIALS_EDIT %}
+  <form action="{{ url_for('material_add') }}" method="post" class="crud-form">
+    <!-- estimate_id — целое, обязательно, и мы должны проверить, что такая смета существует -->
+    <input
+      name="estimate_id"
+      type="number"
+      step="1"
+      min="1"
+      placeholder="Estimate ID"
+      required
+    >
+
+    <!-- name_technical_specification — строка до 300 символов -->
+    <input
+      name="name"
+      type="text"
+      maxlength="300"
+      placeholder="Тех. спецификация"
+      required
+    >
+
+    <!-- type_brand_size — строка до 100 символов -->
+    <input
+      name="type"
+      type="text"
+      maxlength="100"
+      placeholder="Тип/Марка/Размер"
+      required
+    >
+
+    <!-- unit_of_measurement — строка до 50 символов -->
+    <input
+      name="unit"
+      type="text"
+      maxlength="50"
+      placeholder="Ед. изм."
+      required
+    >
+
+    <!-- quantity — десятичное с дробной частью 2 знака -->
+    <input
+      name="quantity"
+      type="number"
+      step="0.01"
+      min="0"
+      placeholder="Кол-во"
+      required
+    >
+
+    <!-- installation_location_method — произвольный текст -->
+    <input
+      name="location"
+      type="text"
+      placeholder="Метод монтажа"
+      required
+    >
+
+    <button type="submit">Добавить запись</button>
+  </form>
+{% endif %}
+
+
+<div class="table-container">
+<table>
+  {% if items %}
+  <tr>
+    {% for col in items[0].keys() %}<th>{{ col }}</th>{% endfor %}
+    {% if current_user.role in settings.MATERIALS_EDIT %}<th>Действия</th>{% endif %}
+  </tr>
+  {% for m in items %}
+  <tr>
+    {% for val in m.values() %}<td>{{ val }}</td>{% endfor %}
+    {% if current_user.role in settings.MATERIALS_EDIT %}
+    <td><a href="{{ url_for('material_delete', material_equipment_id=m.material_equipment_id) }}">Удалить</a></td>
+    {% endif %}
+  </tr>
+  {% endfor %}
+  {% else %}
+    <tr><td colspan="100%">Нет записей</td></tr>
+  {% endif %}
+</table>
+{% endblock %}
+</div>

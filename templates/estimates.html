@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block title %}Сметная документация{% endblock %}
+{% block content %}
+<h1>Сметная документация</h1>
+
+{# Форма поиска #}
+<form method="get" class="search-form">
+  <input
+    type="text"
+    name="q"
+    value="{{ q }}"
+    placeholder="Поиск по коду или наименованию..."
+  >
+  <button type="submit">Найти</button>
+</form>
+
+<!-- Фрагмент estimates.html -->
+{% if current_user.role in settings.ESTIMATE_EDIT %}
+  <form action="{{ url_for('estimate_add') }}" method="post" class="crud-form">
+    <!-- Ожидаем, что price_code_resource_codes — строка, до 100 символов -->
+    <input
+      name="price_code"
+      type="text"
+      maxlength="100"
+      placeholder="Код ресурса"
+      required
+    >
+
+    <!-- work_expense_name — строка, до 300 символов -->
+    <input
+      name="name"
+      type="text"
+      maxlength="300"
+      placeholder="Наименование работ"
+      required
+    >
+
+    <!-- unit_of_measurement — строка, до 50 символов -->
+    <input
+      name="unit"
+      type="text"
+      maxlength="50"
+      placeholder="Ед. изм."
+      required
+    >
+
+    <!-- quantity — десятичное с дробной частью 2 знака -->
+    <input
+      name="quantity"
+      type="number"
+      step="0.01"
+      min="0"
+      placeholder="Кол-во"
+      required
+    >
+
+    <!-- unit_price_rub — десятичное с дробной частью 2 знака -->
+    <input
+      name="price"
+      type="number"
+      step="0.01"
+      min="0"
+      placeholder="Цена за ед."
+      required
+    >
+
+    <!-- adjustment_coefficients — может быть произвольный текст -->
+    <input
+      name="adjust"
+      type="text"
+      placeholder="Коэффициенты корректировки"
+    >
+
+    <!-- winter_increase_coefficients — произвольный текст -->
+    <input
+      name="winter"
+      type="text"
+      placeholder="Зимние коэффициенты"
+    >
+
+    <!-- total_base_cost_rub — десятичное -->
+    <input
+      name="base"
+      type="number"
+      step="0.01"
+      min="0"
+      placeholder="Базовая стоимость"
+      required
+    >
+
+    <!-- recalc_indices_standards — произвольный текст -->
+    <input
+      name="indices"
+      type="text"
+      placeholder="Индексы"
+    >
+
+    <!-- total_current_cost_rub — десятичное -->
+    <input
+      name="total"
+      type="number"
+      step="0.01"
+      min="0"
+      placeholder="Итоговая стоимость"
+      required
+    >
+
+    <button type="submit">Добавить запись</button>
+  </form>
+{% endif %}
+
+
+<div class="table-container">
+<table>
+  {% if items %}
+  <tr>
+    {% for col in items[0].keys() %}<th>{{ col }}</th>{% endfor %}
+    {% if current_user.role in settings.ESTIMATE_EDIT %}<th>Действия</th>{% endif %}
+  </tr>
+  {% for e in items %}
+  <tr>
+    {% for val in e.values() %}<td>{{ val }}</td>{% endfor %}
+    {% if current_user.role in settings.ESTIMATE_EDIT %}
+    <td><a href="{{ url_for('estimate_delete', estimate_id=e.estimate_id) }}">Удалить</a></td>
+    {% endif %}
+  </tr>
+  {% endfor %}
+  {% else %}
+    <tr><td colspan="100%">Нет записей</td></tr>
+  {% endif %}
+</table>
+{% endblock %}
+</div>

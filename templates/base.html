@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/static/styles.css">
+  <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+  <nav>
+    <div class="nav-left">
+      <a
+        href="{{ url_for('dashboard') }}"
+        class="{% if request.endpoint == 'dashboard' %}active{% endif %}"
+      >Главная</a>
+
+      {% if current_user.is_authenticated %}
+
+        {# Сметная документация #}
+        {% if current_user.role in settings.ESTIMATE_VIEW %}
+          <a
+            href="{{ url_for('estimates') }}"
+            class="{% if request.endpoint == 'estimates' %}active{% endif %}"
+          >Сметная документация</a>
+        {% endif %}
+
+        {# Спецификация материалов #}
+        {% if current_user.role in settings.MATERIALS_VIEW %}
+          <a
+            href="{{ url_for('materials') }}"
+            class="{% if request.endpoint == 'materials' %}active{% endif %}"
+          >Спецификация материалов</a>
+        {% endif %}
+        {# Справочник материалов #}
+        {% if current_user.role in settings.MATERIALS_REF_VIEW %}
+          <a
+            href="{{ url_for('materials_ref') }}"
+            class="{% if request.endpoint == 'materials_ref' %}active{% endif %}"
+          >Справочник материалов</a>
+        {% endif %}
+
+        {# Ведомость механизмов #}
+        {% if current_user.role in settings.MECHANISMS_VIEW %}
+          <a
+            href="{{ url_for('mechanisms') }}"
+            class="{% if request.endpoint == 'mechanisms' %}active{% endif %}"
+          >Ведомость механизмов</a>
+        {% endif %}
+        {# Справочник механизмов #}
+        {% if current_user.role in settings.MECHANISMS_REF_VIEW %}
+          <a
+            href="{{ url_for('mechanisms_ref') }}"
+            class="{% if request.endpoint == 'mechanisms_ref' %}active{% endif %}"
+          >Справочник механизмов</a>
+        {% endif %}
+
+        {# Объёмы работ #}
+        {% if current_user.role in settings.WORK_VOLUMES_VIEW %}
+          <a
+            href="{{ url_for('work_volumes') }}"
+            class="{% if request.endpoint == 'work_volumes' %}active{% endif %}"
+          >Объёмы работ</a>
+        {% endif %}
+        {# ИТР #}
+        {% if current_user.role in settings.ITR_VIEW %}
+          <a
+            href="{{ url_for('itr_list') }}"
+            class="{% if request.endpoint == 'itr_list' %}active{% endif %}"
+          >ИТР</a>
+        {% endif %}
+
+        {# Строители / Специалисты #}
+        {% if current_user.role in settings.BUILDERS_SPECIALISTS_VIEW %}
+          <a
+            href="{{ url_for('builders_specialists') }}"
+            class="{% if request.endpoint == 'builders_specialists' %}active{% endif %}"
+          >Строители/Специалисты</a>
+        {% endif %}
+
+        {# АУП #}
+        {% if current_user.role in settings.AUP_VIEW %}
+          <a
+            href="{{ url_for('aup_list') }}"
+            class="{% if request.endpoint == 'aup_list' %}active{% endif %}"
+          >АУП</a>
+        {% endif %}
+
+        <a href="{{ url_for('logout') }}">Выход</a>
+      {% else %}
+        <a
+          href="{{ url_for('login') }}"
+          class="{% if request.endpoint == 'login' %}active{% endif %}"
+        >Вход</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  {# >>> Блок для отображения flash-сообщений <<< #}
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-messages">
+        {% for category, msg in messages %}
+          <div class="message {{ category }}">{{ msg }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

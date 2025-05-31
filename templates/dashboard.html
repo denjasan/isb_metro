@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Панель{% endblock %}
+{% block content %}
+  <h1>Добро пожаловать, {{ current_user.username }}!</h1>
+  <p>Ваша роль: {{ current_user.role }}</p>
+{% endblock %}

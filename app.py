@@ -132,6 +132,10 @@ def estimate_add():
         flash("Числовые поля не могут быть отрицательными.", "error")
         return redirect(url_for("estimates"))
 
+    if int(quantity) > 99999999 or int(unit_price) > 99999999 or int(base_cost) > 9999999999999 or int(total_cost) > 9999999999999:
+        flash("Слишком много ввели, перепроверьте результаты.", "error")
+        return redirect(url_for("estimates"))
+
     try:
         db.execute(
             "INSERT INTO psd.estimate_documentation "
@@ -227,6 +231,10 @@ def material_add():
         flash("Количество не может быть отрицательным.", "error")
         return redirect(url_for("materials"))
 
+    if int(quantity) > 99999999:
+        flash("Количество не может быть таким большим (больше чем 10^8).", "error")
+        return redirect(url_for("materials_ref"))
+
     try:
         db.execute(
             "INSERT INTO psd.main_materials_equipment "
@@ -300,6 +308,10 @@ def materials_ref_add():
         flash("Количество не может быть отрицательным.", "error")
         return redirect(url_for("materials_ref"))
 
+    if int(quantity) > 99999999:
+        flash("Количество не может быть таким большим (больше чем 10^8).", "error")
+        return redirect(url_for("materials_ref"))
+
     if d.get('supplier') and len(d['supplier']) > 200:
         flash("Поставщик слишком длинный (до 200).", "error")
         return redirect(url_for("materials_ref"))
@@ -308,7 +320,7 @@ def materials_ref_add():
     if d.get('unit_cost_rub'):
         try:
             unit_cost = Decimal(d['unit_cost_rub'])
-            if unit_cost < 0:
+            if unit_cost < 0 or int(unit_cost) > 99999999:
                 raise InvalidOperation
         except (InvalidOperation, ValueError):
             flash("Некорректное значение «unit_cost_rub».", "error")
@@ -318,7 +330,7 @@ def materials_ref_add():
     if d.get('total_cost_rub'):
         try:
             total_cost = Decimal(d['total_cost_rub'])
-            if total_cost < 0:
+            if total_cost < 0 or int(total_cost) > 9999999999999:
                 raise InvalidOperation
         except (InvalidOperation, ValueError):
             flash("Некорректное значение «total_cost_rub».", "error")
@@ -584,6 +596,10 @@ def work_volume_add():
         flash("Количество не может быть отрицательным.", "error")
         return redirect(url_for("work_volumes"))
 
+    if int(quantity) > 99999999:
+        flash("Количество не может быть таким большим (больше чем 10^8).", "error")
+        return redirect(url_for("materials_ref"))
+
     if d.get('notes') and len(d['notes']) > 1000:
         flash("Примечания слишком длинные.", "error")
         return redirect(url_for("work_volumes"))
@@ -667,6 +683,9 @@ def builder_add():
     if salary < 0:
         flash("Зарплата не может быть отрицательной.", "error")
         return redirect(url_for("builders_specialists"))
+    if int(salary) > 99999999:
+        flash("Зарплата не может быть такой большой (больше чем 10^8).", "error")
+        return redirect(url_for("materials_ref"))
 
     try:
         db.execute(
@@ -747,6 +766,9 @@ def itr_add():
     if salary < 0:
         flash("Зарплата не может быть отрицательной.", "error")
         return redirect(url_for("itr_list"))
+    if int(salary) > 99999999:
+        flash("Зарплата не может быть такой большой (больше чем 10^8).", "error")
+        return redirect(url_for("materials_ref"))
 
     try:
         db.execute(
@@ -827,6 +849,9 @@ def aup_add():
     if salary < 0:
         flash("Зарплата не может быть отрицательной.", "error")
         return redirect(url_for("aup_list"))
+    if int(salary) > 99999999:
+        flash("Зарплата не может быть такой большой (больше чем 10^8).", "error")
+        return redirect(url_for("materials_ref"))
 
     try:
         db.execute(
